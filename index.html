@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0d0d0f" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Stream Deck" />
+  <title>MKSLB Stream Deck</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════
+       HEADER
+  ═══════════════════════════════════════════════════════ -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="logo">
+        <span class="logo-icon">📡</span>
+        <span class="logo-text">MKSLB <span class="logo-accent">Stream Deck</span></span>
+      </div>
+    </div>
+    <div class="header-center">
+      <div class="status-bar">
+        <div class="status-dot" id="statusDot"></div>
+        <span class="status-text" id="statusText">Disconnected</span>
+      </div>
+      <div class="mode-badge" id="modeBadge">STUDIO MODE</div>
+    </div>
+    <div class="header-right">
+      <button class="icon-btn" id="monitorBtn" title="Toggle Monitoring">📺</button>
+      <button class="icon-btn" id="settingsBtn" title="Settings (Alt+S)">⚙️</button>
+      <button class="icon-btn" id="connectBtn" title="Connect / Disconnect">🔌</button>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════
+       PREVIEW / PROGRAM LABELS
+  ═══════════════════════════════════════════════════════ -->
+  <div class="studio-labels">
+    <div class="studio-label preview-label">
+      <span class="label-dot preview-dot"></span>
+      PREVIEW
+      <span class="active-scene-name" id="previewSceneName">—</span>
+    </div>
+    <div class="studio-label program-label">
+      <span class="label-dot program-dot"></span>
+      PROGRAM (LIVE)
+      <span class="active-scene-name" id="programSceneName">—</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       MONITOR BAR (Preview / Program Live View)
+   ═══════════════════════════════════════════════════════ -->
+  <div class="monitor-bar" id="monitorBar" hidden>
+    <div class="monitor-window">
+      <span class="monitor-label">👁️ PREVIEW</span>
+      <img class="monitor-img" id="monitorPreview" alt="Preview" />
+      <span class="monitor-empty" id="monitorPreviewEmpty">Tiada preview</span>
+    </div>
+    <div class="monitor-window">
+      <span class="monitor-label monitor-label-program">🔴 PROGRAM (LIVE)</span>
+      <img class="monitor-img" id="monitorProgram" alt="Program" />
+      <span class="monitor-empty" id="monitorProgramEmpty">Tiada program</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       MAIN LAYOUT
+   ═══════════════════════════════════════════════════════ -->
+  <main class="main-layout">
+
+    <!-- SCENE GRID -->
+    <section class="panel scene-panel">
+      <h2 class="panel-title">
+        <span class="panel-icon">🎬</span> SCENES
+        <span class="panel-hint">→ Set Preview</span>
+      </h2>
+      <div class="scene-grid" id="sceneGrid">
+
+        <!-- Row 1: Setup Scenes -->
+        <button class="btn btn-scene btn-setup" data-scene="POSTER" data-key="F1">
+          <span class="btn-icon">🖼️</span>
+          <span class="btn-label">POSTER</span>
+          <span class="btn-key">F1</span>
+        </button>
+
+        <button class="btn btn-scene btn-setup" data-scene="STARTING SOON" data-key="F2">
+          <span class="btn-icon">⏳</span>
+          <span class="btn-label">STARTING SOON</span>
+          <span class="btn-key">F2</span>
+        </button>
+
+        <button class="btn btn-scene btn-setup" data-scene="BREAKBUMPER" data-key="F3">
+          <span class="btn-icon">⏸️</span>
+          <span class="btn-label">BREAKBUMPER</span>
+          <span class="btn-key">F3</span>
+        </button>
+
+        <button class="btn btn-scene btn-setup" data-scene="AZAN SOLAT" data-key="F4">
+          <span class="btn-icon">🕌</span>
+          <span class="btn-label">AZAN SOLAT</span>
+          <span class="btn-key">F4</span>
+          <span class="btn-badge">CAM 2</span>
+        </button>
+
+        <!-- Row 2: Main Views -->
+        <button class="btn btn-scene btn-main" data-scene="MAIN VIEW" data-key="Alt+1">
+          <span class="btn-icon">📷</span>
+          <span class="btn-label">MAIN VIEW</span>
+          <span class="btn-key">Alt+1</span>
+          <span class="btn-badge">CAM 3</span>
+        </button>
+
+        <button class="btn btn-scene btn-main" data-scene="IMAM VIEW" data-key="Alt+2">
+          <span class="btn-icon">🎙️</span>
+          <span class="btn-label">IMAM VIEW</span>
+          <span class="btn-key">Alt+2</span>
+          <span class="btn-badge">CAM 4</span>
+        </button>
+
+        <button class="btn btn-scene btn-main" data-scene="SOLAT VIEW" data-key="Alt+3">
+          <span class="btn-icon">🙏</span>
+          <span class="btn-label">SOLAT VIEW</span>
+          <span class="btn-key">Alt+3</span>
+          <span class="btn-badge">CAM 6</span>
+        </button>
+
+        <button class="btn btn-scene btn-main" data-scene="KHUTBAH VIEW" data-key="Alt+4">
+          <span class="btn-icon">📖</span>
+          <span class="btn-label">KHUTBAH VIEW</span>
+          <span class="btn-key">Alt+4</span>
+        </button>
+
+        <!-- Row 3: Extra Views -->
+        <button class="btn btn-scene btn-main" data-scene="WIDEANGLE VIEW" data-key="Alt+5">
+          <span class="btn-icon">🔭</span>
+          <span class="btn-label">WIDEANGLE VIEW</span>
+          <span class="btn-key">Alt+5</span>
+        </button>
+
+        <button class="btn btn-scene btn-main" data-scene="KHATIB" data-key="Alt+6">
+          <span class="btn-icon">🎤</span>
+          <span class="btn-label">KHATIB</span>
+          <span class="btn-key">Alt+6</span>
+          <span class="btn-badge">CAM 3</span>
+        </button>
+
+        <button class="btn btn-scene btn-main" data-scene="DUA 2 KHUTBAH" data-key="Alt+7">
+          <span class="btn-icon">🤲</span>
+          <span class="btn-label">DUA 2 KHUTBAH</span>
+          <span class="btn-key">Alt+7</span>
+        </button>
+
+        <button class="btn btn-scene btn-setup" data-scene="INTRO TAKBIR" data-key="Alt+8">
+          <span class="btn-icon">📣</span>
+          <span class="btn-label">INTRO TAKBIR</span>
+          <span class="btn-key">Alt+8</span>
+        </button>
+
+        <button class="btn btn-scene btn-setup" data-scene="WAKTU SOLAT" data-key="Alt+9">
+          <span class="btn-icon">🕐</span>
+          <span class="btn-label">WAKTU SOLAT</span>
+          <span class="btn-key">Alt+9</span>
+          <span class="btn-badge">TIMETABLE</span>
+        </button>
+
+      </div>
+    </section>
+
+    <!-- RIGHT COLUMN: Transition + Sources -->
+    <aside class="side-panel">
+
+      <!-- TRANSITION BUTTON -->
+      <section class="panel transition-panel">
+        <h2 class="panel-title">
+          <span class="panel-icon">🔀</span> TRANSITION
+        </h2>
+
+        <div class="transition-type-row">
+          <button class="trans-type-btn active" id="transCut" data-type="cut">✂️ CUT</button>
+          <button class="trans-type-btn" id="transFade" data-type="fade">🌫️ FADE</button>
+        </div>
+
+        <button class="btn btn-transition" id="transitionBtn" data-key="Alt+T">
+          <span class="btn-icon trans-icon">▶▶</span>
+          <span class="btn-label">TRANSITION</span>
+          <span class="btn-sublabel">Preview → Program</span>
+          <span class="btn-key">Alt+T</span>
+        </button>
+      </section>
+
+      <!-- SOURCE TOGGLES -->
+      <section class="panel source-panel">
+        <h2 class="panel-title">
+          <span class="panel-icon">🎛️</span> SOURCES
+          <span class="panel-hint">Toggle On/Off</span>
+        </h2>
+        <div class="source-grid" id="sourceGrid">
+
+          <button class="btn btn-source" data-source="MKSLB FRAME 3" data-key="Alt+F">
+            <span class="btn-icon">🖼️</span>
+            <span class="btn-label">MKSLB FRAME 3</span>
+            <span class="source-status">OFF</span>
+            <span class="btn-key">Alt+F</span>
+          </button>
+
+          <button class="btn btn-source" data-source="LT" data-key="Alt+L">
+            <span class="btn-icon">📝</span>
+            <span class="btn-label">LT (Lower Third)</span>
+            <span class="source-status">OFF</span>
+            <span class="btn-key">Alt+L</span>
+          </button>
+
+          <button class="btn btn-source" data-source="MKSLB LOGO GIF 5" data-key="Alt+G">
+            <span class="btn-icon">✨</span>
+            <span class="btn-label">MKSLB LOGO GIF 5</span>
+            <span class="source-status">OFF</span>
+            <span class="btn-key">Alt+G</span>
+          </button>
+
+          <button class="btn btn-source" data-source="SCROLL 4 2" data-key="Alt+R">
+            <span class="btn-icon">📜</span>
+            <span class="btn-label">SCROLL 4 2</span>
+            <span class="source-status">OFF</span>
+            <span class="btn-key">Alt+R</span>
+          </button>
+
+        </div>
+      </section>
+
+    </aside>
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SETTINGS MODAL
+  ═══════════════════════════════════════════════════════ -->
+  <div class="modal-overlay" id="settingsModal" hidden>
+    <div class="modal">
+      <div class="modal-header">
+        <h3>⚙️ OBS WebSocket Settings</h3>
+        <button class="modal-close" id="closeSettings">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="obsHost">Host / IP Address</label>
+          <input type="text" id="obsHost" placeholder="localhost" value="localhost" />
+          <span class="form-hint">Contoh: 192.168.1.100 atau localhost</span>
+        </div>
+        <div class="form-group">
+          <label for="obsPort">Port</label>
+          <input type="number" id="obsPort" placeholder="4455" value="4455" />
+          <span class="form-hint">Port lalai OBS WebSocket v5: 4455</span>
+        </div>
+        <div class="form-group">
+          <label for="obsPassword">Password</label>
+          <input type="password" id="obsPassword" placeholder="•••••••••" />
+          <span class="form-hint">Kosongkan jika tiada password</span>
+        </div>
+        <div class="modal-actions">
+          <button class="btn-modal btn-modal-save" id="saveSettings">💾 Simpan & Sambung</button>
+          <button class="btn-modal btn-modal-cancel" id="cancelSettings">Batal</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <p>⚠️ Pastikan OBS Studio dibuka dan plugin <strong>obs-websocket</strong> diaktifkan di <em>Tools → WebSocket Server Settings</em></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       TOAST NOTIFICATION
+  ═══════════════════════════════════════════════════════ -->
+  <div class="toast" id="toast" hidden></div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SCRIPTS (ES6 Modules)
+  ═══════════════════════════════════════════════════════ -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
